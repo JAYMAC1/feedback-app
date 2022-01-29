@@ -12,11 +12,17 @@ function App() {
       setFeedback(feedback.filter((item) => item.id !== id))
     }
   }
+  const addFeedback = (newFeedback) => {
+    console.log(newFeedback)
+    // setFeedback((prev) => {
+    //   prev.push(newFeedback)
+    // })
+  }
   return (
     <>
       <Header text='Feedback UI' />
       <div className='container'>
-        <FeedbackForm />
+        <FeedbackForm handleAdd={addFeedback} />
         <FeedbackStats feedback={feedback} />
         <FeedbackList feedback={feedback} handleDelete={deleteFeedback} />
       </div>
