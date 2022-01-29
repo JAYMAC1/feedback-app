@@ -1,9 +1,20 @@
-import React, { useState } from 'react'
+// react components
+import React, { useState, useContext } from 'react'
+
+// context and hooks
+import FeedbackContext from '../context/FeedbackContext'
+
+// components and pages
 import RatingSelect from './RatingSelect'
 import Button from './shared/Button'
 import { Card } from './shared/Card'
 
-const FeedbackForm = ({ handleAdd }) => {
+// npm packages
+import { v4 as uuidv4 } from 'uuid'
+
+const FeedbackForm = () => {
+  const { feedback, setFeedback } = useContext(FeedbackContext)
+
   const [text, setText] = useState('')
   const [rating, setRating] = useState(10)
   const [btnDisabled, setBtnDisabled] = useState(true)
@@ -32,11 +43,12 @@ const FeedbackForm = ({ handleAdd }) => {
     e.preventDefault()
     if (text.trim().length > 10) {
       const newFeedback = {
+        id: uuidv4(),
         rating: rating,
         text: text,
       }
-      handleAdd(newFeedback)
-      // setText('')
+      setFeedback([newFeedback, ...feedback])
+      setText('')
     }
   }
 
