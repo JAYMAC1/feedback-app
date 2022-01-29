@@ -13,7 +13,7 @@ import { Card } from './shared/Card'
 import { v4 as uuidv4 } from 'uuid'
 
 const FeedbackForm = () => {
-  const { feedback, setFeedback } = useContext(FeedbackContext)
+  const { addFeedback } = useContext(FeedbackContext)
 
   const [text, setText] = useState('')
   const [rating, setRating] = useState(10)
@@ -47,7 +47,7 @@ const FeedbackForm = () => {
         rating: rating,
         text: text,
       }
-      setFeedback([newFeedback, ...feedback])
+      addFeedback(newFeedback)
       setText('')
     }
   }
