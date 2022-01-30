@@ -9,11 +9,11 @@ import RatingSelect from './RatingSelect'
 import Button from './shared/Button'
 import { Card } from './shared/Card'
 
-// npm packages
-import { v4 as uuidv4 } from 'uuid'
+// npm packages go here
 
 const FeedbackForm = () => {
-  const { addFeedback, feedbackEdit } = useContext(FeedbackContext)
+  const { addFeedback, feedbackEdit, updateFeedback } =
+    useContext(FeedbackContext)
 
   const [text, setText] = useState('')
   const [rating, setRating] = useState(10)
@@ -21,9 +21,8 @@ const FeedbackForm = () => {
   const [message, setMessage] = useState('')
 
   useEffect(() => {
-    if (feedbackEdit.edit) {
-      console.log('useEffect')
-      setMessage(feedbackEdit.item.message)
+    if (feedbackEdit.edit === true) {
+      setText(feedbackEdit.item.text)
       setRating(feedbackEdit.item.rating)
     }
   }, [feedbackEdit])
@@ -44,6 +43,7 @@ const FeedbackForm = () => {
   }
 
   const select = (rating) => {
+    console.log(rating)
     setRating(rating)
   }
 
@@ -51,12 +51,16 @@ const FeedbackForm = () => {
     e.preventDefault()
     if (text.trim().length > 10) {
       const newFeedback = {
-        id: uuidv4(),
         rating: rating,
         text: text,
       }
-      addFeedback(newFeedback)
+      if (feedbackEdit.edit === true) {
+        updateFeedback(feedbackEdit.item.id, newFeedback)
+      } else {
+        addFeedback(newFeedback)
+      }
       setText('')
+      setRating(10)
     }
   }
 
@@ -73,7 +77,7 @@ const FeedbackForm = () => {
             value={text}
           />
           <Button type='submit' isDisabled={btnDisabled}>
-            {!feedbackEdit.edit ? 'Send' : 'Update'}
+            Send
           </Button>
         </div>
         {message && <div className='message'>{message}</div>}
